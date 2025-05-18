@@ -6,8 +6,8 @@ import (
 )
 
 var (
-	NO_AUTH_HEADER         = status.Errorf(codes.InvalidArgument, "No authheader provided")
-	FAILED_TO_GET_METADATA = status.Errorf(codes.DataLoss, "UnaryEcho: failed to get metadata")
-	PERMISSION_DENIED      = status.Errorf(codes.PermissionDenied, "Permission Denied")
-	INTERNAL_ERROR         = status.Errorf(codes.Internal, "Failed to connect to postgres")
+	NO_AUTH_HEADER            = status.Errorf(codes.InvalidArgument, "No authheader provided")
+	PERMISSION_DENIED         = status.Errorf(codes.PermissionDenied, "Permission Denied")
+	INTERNAL_ERROR            = status.Errorf(codes.Internal, "Unkonwn Internal failure")
+	POSTGRES_CONNECTION_ERROR = status.Errorf(codes.Internal, "Cannot connect to postgres")
 )

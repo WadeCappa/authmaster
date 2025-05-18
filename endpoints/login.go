@@ -58,7 +58,7 @@ func Login(ctx context.Context, in *authmaster.LoginRequest) (*authmaster.LoginR
 		return nil, PERMISSION_DENIED
 	}
 
-	if hashing.VerifyPassword(in.Password, *&userData.dbHash) != nil {
+	if hashing.VerifyPassword(in.Password, userData.dbHash) != nil {
 		fmt.Fprintf(os.Stderr, "Failed to verify password, %s\n", err)
 		return nil, PERMISSION_DENIED
 	}
