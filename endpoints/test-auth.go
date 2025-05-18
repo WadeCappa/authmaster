@@ -5,23 +5,18 @@ import (
 	"authmaster/store"
 	"context"
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/jackc/pgx/v5"
-	"google.golang.org/grpc/codes"
+	"github.com/jackc/pgx/v5/pgtype"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 )
 
-var (
-	NO_AUTH_HEADER         = status.Errorf(codes.InvalidArgument, "No authheader provided")
-	FAILED_TO_GET_METADATA = status.Errorf(codes.DataLoss, "UnaryEcho: failed to get metadata")
-	INVALID_AUTH           = status.Errorf(codes.PermissionDenied, "Permission Denied")
-	INTERNAL_ERROR         = status.Errorf(codes.Internal, "Failed to connect to postgres")
-)
-
-type result struct {
-	success bool
-	e       error
+type testResult struct {
+	userId     int64
+	expireTime pgtype.Date
+	e          error
 }
 
 func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
@@ -37,21 +32,28 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 
 		token := t[0]
 		fmt.Printf("Testing auth token %s", token)
-		result, err := store.Call(func(conn *pgx.Conn) *result {
-			return &result{success: true, e: nil}
+		testResult, err := store.Call(func(conn *pgx.Conn) *testResult {
+			var userId int64
+			var expireTime pgtype.Date
+			err := conn.QueryRow(context.Background(), "select user_id, expire_time from users where token=$1", token).Scan(&userId, &expireTime)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+				os.Exit(1)
+			}
+			return &testResult{userId: userId, expireTime: expireTime, e: nil}
 		})
 		if err != nil {
-			fmt.Printf("Failed to connect to postgres, %s", err)
+			fmt.Fprintf(os.Stderr, "Failed to connect to postgres, %s", err)
 			return nil, INTERNAL_ERROR
 		}
-		if !result.success && result.e == nil {
+		if testResult.e != nil {
+			fmt.Fprintf(os.Stderr, "Encountered some error, %s", testResult.e)
+			return nil, INTERNAL_ERROR
+		}
+		if testResult.expireTime.Time.Before(time.Now()) {
 			return nil, INVALID_AUTH
 		}
-		if !result.success {
-			fmt.Printf("Encountered some error, %s", result.e)
-			return nil, INTERNAL_ERROR
-		}
-		return &authmaster.TestAuthResponse{UserId: 0}, nil
+		return &authmaster.TestAuthResponse{UserId: int32(testResult.userId)}, nil
 	}
 
 	return nil, NO_AUTH_HEADER

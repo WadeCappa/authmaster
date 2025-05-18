@@ -1,0 +1,1 @@
+This program should only ever be run once to seed a database. At some point in the future, this module might be expanded to handle db migrations as well.
