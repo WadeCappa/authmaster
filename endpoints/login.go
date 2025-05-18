@@ -10,6 +10,8 @@ import (
 	"os"
 	"time"
 
+	"encoding/base64"
+
 	"github.com/jackc/pgx/v5"
 )
 
@@ -93,12 +95,16 @@ func Login(ctx context.Context, in *authmaster.LoginRequest) (*authmaster.LoginR
 	return &authmaster.LoginResponse{Token: newTokenResult.newToken}, nil
 }
 
-func makeToken(n int) ([]byte, error) {
+func makeToken(n int) (*string, error) {
 	bytes := make([]byte, n)
 	_, err := rand.Read(bytes)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create token, %s\n", err)
 		return nil, err
 	}
-	return bytes, nil
+
+	encoded := base64.RawURLEncoding.EncodeToString(bytes)
+	shortened := encoded[0:authTokenLength]
+	fmt.Printf("created token, not yet stored. Has length of %d and looks like %s\n", len(shortened), shortened)
+	return &shortened, nil
 }

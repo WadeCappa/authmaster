@@ -25,12 +25,12 @@ func (s *server) TestAuth(ctx context.Context, in *authmaster.TestAuthRequest) (
 	return endpoints.HandleTest(ctx)
 }
 
-func (s *server) CreateUser(_ context.Context, in *authmaster.CreateUserRequest) (*authmaster.CreateUserResponse, error) {
-	return &authmaster.CreateUserResponse{}, nil
+func (s *server) CreateUser(ctx context.Context, in *authmaster.CreateUserRequest) (*authmaster.CreateUserResponse, error) {
+	return endpoints.CreateUser(ctx, in)
 }
 
-func (s *server) Login(_ context.Context, in *authmaster.LoginRequest) (*authmaster.LoginResponse, error) {
-	return &authmaster.LoginResponse{Token: "fake-token"}, nil
+func (s *server) Login(ctx context.Context, in *authmaster.LoginRequest) (*authmaster.LoginResponse, error) {
+	return endpoints.Login(ctx, in)
 }
 
 var (
