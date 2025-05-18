@@ -308,7 +308,7 @@ const file_authmaster_authmaster_proto_rawDesc = "" +
 	"\bTestAuth\x12\x1b.authmaster.TestAuthRequest\x1a\x1c.authmaster.TestAuthResponse\"\x00\x12>\n" +
 	"\x05Login\x12\x18.authmaster.LoginRequest\x1a\x19.authmaster.LoginResponse\"\x00\x12M\n" +
 	"\n" +
-	"CreateUser\x12\x1d.authmaster.CreateUserRequest\x1a\x1e.authmaster.CreateUserResponse\"\x00B-Z+github.com/WadeCappa/authmaster/authmaster/b\x06proto3"
+	"CreateUser\x12\x1d.authmaster.CreateUserRequest\x1a\x1e.authmaster.CreateUserResponse\"\x00B\x17Z\x15authmaster/authmasterb\x06proto3"
 
 var (
 	file_authmaster_authmaster_proto_rawDescOnce sync.Once

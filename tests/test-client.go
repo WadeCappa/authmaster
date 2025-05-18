@@ -1,11 +1,10 @@
 package main
 
 import (
+	"authmaster/authmaster"
 	"context"
 	"flag"
 	"log"
-
-	"authmaster/authmaster"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
