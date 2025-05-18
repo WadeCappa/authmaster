@@ -1,6 +1,6 @@
 
 syntax = "proto3";
-option go_package = "github.com/WadeCappa/authmaster/authmaster/authmaster";
+option go_package = "github.com/WadeCappa/authmaster/authmaster/";
 package authmaster;
 
 service Authmaster {
@@ -20,7 +20,9 @@ message LoginRequest {
     string password = 2;
 }
 
-message LoginResponse {}
+message LoginResponse {
+  string token = 1;
+}
 
 message CreateUserRequest {
     string username = 1;

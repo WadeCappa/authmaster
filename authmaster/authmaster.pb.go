@@ -155,6 +155,7 @@ func (x *LoginRequest) GetPassword() string {
 
 type LoginResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -187,6 +188,13 @@ func (x *LoginResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
 func (*LoginResponse) Descriptor() ([]byte, []int) {
 	return file_authmaster_authmaster_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *LoginResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
 }
 
 type CreateUserRequest struct {
@@ -288,8 +296,9 @@ const file_authmaster_authmaster_proto_rawDesc = "" +
 	"\x06userId\x18\x01 \x01(\x05R\x06userId\"F\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"\x0f\n" +
-	"\rLoginResponse\"K\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"%\n" +
+	"\rLoginResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"K\n" +
 	"\x11CreateUserRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"\x14\n" +
@@ -299,7 +308,7 @@ const file_authmaster_authmaster_proto_rawDesc = "" +
 	"\bTestAuth\x12\x1b.authmaster.TestAuthRequest\x1a\x1c.authmaster.TestAuthResponse\"\x00\x12>\n" +
 	"\x05Login\x12\x18.authmaster.LoginRequest\x1a\x19.authmaster.LoginResponse\"\x00\x12M\n" +
 	"\n" +
-	"CreateUser\x12\x1d.authmaster.CreateUserRequest\x1a\x1e.authmaster.CreateUserResponse\"\x00B7Z5github.com/WadeCappa/authmaster/authmaster/authmasterb\x06proto3"
+	"CreateUser\x12\x1d.authmaster.CreateUserRequest\x1a\x1e.authmaster.CreateUserResponse\"\x00B-Z+github.com/WadeCappa/authmaster/authmaster/b\x06proto3"
 
 var (
 	file_authmaster_authmaster_proto_rawDescOnce sync.Once
