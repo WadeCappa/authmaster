@@ -9,27 +9,20 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
+
+	"authmaster/endpoints"
 )
 
 type server struct {
 	authmaster.AuthmasterServer
 }
 
-const AUTH_PREFIX = "Authorization"
+const (
+	AUTH_PREFIX = "Authorization"
+)
 
 func (s *server) TestAuth(ctx context.Context, in *authmaster.TestAuthRequest) (*authmaster.TestAuthResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	fmt.Println(md)
-	if !ok {
-		return nil, status.Errorf(codes.DataLoss, "UnaryEcho: failed to get metadata")
-	}
-	if t, ok := md["authorization"]; ok {
-		fmt.Printf("Testing auth token %s", t)
-	}
-	return &authmaster.TestAuthResponse{UserId: 0}, nil
+	return endpoints.HandleTest(ctx)
 }
 
 func (s *server) CreateUser(_ context.Context, in *authmaster.CreateUserRequest) (*authmaster.CreateUserResponse, error) {
@@ -57,7 +50,3 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
-
-// func getToken(c *gin.Context) string {
-// 	return c.Request.Header[AUTH_PREFIX]
-// }
