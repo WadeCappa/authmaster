@@ -8,8 +8,6 @@ create table users (
     unique (username)
 );
 
-create index user_lookup on users (username, hash);
-
 create sequence user_ids start 101;
 
 create table tokens (

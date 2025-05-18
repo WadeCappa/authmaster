@@ -32,7 +32,7 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 
 		token := t[0]
 		fmt.Printf("Testing auth token %s", token)
-		testResult, err := store.Call(func(conn *pgx.Conn) *testResult {
+		testResult, err := store.Call(func(conn *pgx.Conn) testResult {
 			var userId int64
 			var expireTime pgtype.Date
 			err := conn.QueryRow(context.Background(), "select user_id, expire_time from users where token=$1", token).Scan(&userId, &expireTime)
@@ -40,7 +40,7 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 				fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
 				os.Exit(1)
 			}
-			return &testResult{userId: userId, expireTime: expireTime, e: nil}
+			return testResult{userId: userId, expireTime: expireTime, e: nil}
 		})
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to connect to postgres, %s", err)
@@ -51,7 +51,7 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 			return nil, INTERNAL_ERROR
 		}
 		if testResult.expireTime.Time.Before(time.Now()) {
-			return nil, INVALID_AUTH
+			return nil, PERMISSION_DENIED
 		}
 		return &authmaster.TestAuthResponse{UserId: int32(testResult.userId)}, nil
 	}
