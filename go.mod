@@ -1,4 +1,4 @@
-module authmaster
+module github.com/WadeCappa/authmaster
 
 go 1.23.9
 

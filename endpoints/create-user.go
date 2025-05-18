@@ -1,13 +1,13 @@
 package endpoints
 
 import (
-	"authmaster/authmaster"
-	"authmaster/hashing"
-	"authmaster/store"
 	"context"
 	"fmt"
 	"os"
 
+	"github.com/WadeCappa/authmaster/authmaster"
+	"github.com/WadeCappa/authmaster/hashing"
+	"github.com/WadeCappa/authmaster/store"
 	"github.com/jackc/pgx/v5"
 )
 

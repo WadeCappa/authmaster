@@ -1,13 +1,13 @@
 package endpoints
 
 import (
-	"authmaster/authmaster"
-	"authmaster/store"
 	"context"
 	"fmt"
 	"os"
 	"time"
 
+	"github.com/WadeCappa/authmaster/authmaster"
+	"github.com/WadeCappa/authmaster/store"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"google.golang.org/grpc/metadata"

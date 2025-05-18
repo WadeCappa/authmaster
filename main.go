@@ -1,16 +1,15 @@
 package main
 
 import (
-	"authmaster/authmaster"
 	"context"
 	"flag"
 	"fmt"
 	"log"
 	"net"
 
+	"github.com/WadeCappa/authmaster/authmaster"
+	"github.com/WadeCappa/authmaster/endpoints"
 	"google.golang.org/grpc"
-
-	"authmaster/endpoints"
 )
 
 type server struct {
