@@ -59,7 +59,7 @@ func (*TestAuthRequest) Descriptor() ([]byte, []int) {
 
 type TestAuthResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -94,7 +94,7 @@ func (*TestAuthResponse) Descriptor() ([]byte, []int) {
 	return file_authmaster_authmaster_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *TestAuthResponse) GetUserId() int32 {
+func (x *TestAuthResponse) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
@@ -293,7 +293,7 @@ const file_authmaster_authmaster_proto_rawDesc = "" +
 	"authmaster\"\x11\n" +
 	"\x0fTestAuthRequest\"*\n" +
 	"\x10TestAuthResponse\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x05R\x06userId\"F\n" +
+	"\x06userId\x18\x01 \x01(\x03R\x06userId\"F\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"%\n" +
@@ -308,7 +308,7 @@ const file_authmaster_authmaster_proto_rawDesc = "" +
 	"\bTestAuth\x12\x1b.authmaster.TestAuthRequest\x1a\x1c.authmaster.TestAuthResponse\"\x00\x12>\n" +
 	"\x05Login\x12\x18.authmaster.LoginRequest\x1a\x19.authmaster.LoginResponse\"\x00\x12M\n" +
 	"\n" +
-	"CreateUser\x12\x1d.authmaster.CreateUserRequest\x1a\x1e.authmaster.CreateUserResponse\"\x00B\x17Z\x15authmaster/authmasterb\x06proto3"
+	"CreateUser\x12\x1d.authmaster.CreateUserRequest\x1a\x1e.authmaster.CreateUserResponse\"\x00B,Z*github.com/WadeCappa/authmaster/authmasterb\x06proto3"
 
 var (
 	file_authmaster_authmaster_proto_rawDescOnce sync.Once

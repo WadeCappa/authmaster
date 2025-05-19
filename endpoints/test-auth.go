@@ -37,7 +37,6 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 	}
 
 	token := t[0]
-	fmt.Printf("Testing auth token %s", token)
 	testResult, err := store.Call(func(conn *pgx.Conn) testResult {
 		var userId int64
 		var expireTime pgtype.Date
@@ -59,5 +58,5 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 		return nil, PERMISSION_DENIED
 	}
 
-	return &authmaster.TestAuthResponse{UserId: int32(testResult.userId)}, nil
+	return &authmaster.TestAuthResponse{UserId: testResult.userId}, nil
 }
