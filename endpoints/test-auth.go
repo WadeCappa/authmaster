@@ -3,7 +3,6 @@ package endpoints
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/WadeCappa/authmaster/authmaster"
@@ -27,7 +26,6 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 	}
 
 	t, ok := md["authorization"]
-
 	if !ok {
 		return nil, NO_AUTH_HEADER
 	}
@@ -42,19 +40,20 @@ func HandleTest(ctx context.Context) (*authmaster.TestAuthResponse, error) {
 		var expireTime pgtype.Date
 		err := conn.QueryRow(context.Background(), "select user_id, expire_time from tokens where token=$1", token).Scan(&userId, &expireTime)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-			return testResult{e: err}
+			return testResult{e: fmt.Errorf("sql query failed: %v", err)}
 		}
 		return testResult{userId: userId, expireTime: expireTime, e: nil}
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to connect to postgres, %s", err)
+		fmt.Printf("Failed to connect to postgres: %s\n", err)
 		return nil, POSTGRES_CONNECTION_ERROR
 	}
 	if testResult.e != nil {
-		return nil, PERMISSION_DENIED
+		fmt.Printf("Failed to return a result: %v\n", testResult.e)
+		return nil, testResult.e
 	}
 	if testResult.expireTime.Time.Before(time.Now()) {
+		fmt.Printf("Token has expired: %v\n", testResult)
 		return nil, PERMISSION_DENIED
 	}
 
