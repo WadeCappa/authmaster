@@ -15,7 +15,7 @@ create table tokens (
     token varchar(256),
     expire_time timestamptz,
 
-    foreign key (user_id) references users(user_id),
+    foreign key (user_id) references users(user_id) on delete cascade,
     unique(token),
     primary key (user_id, token)
 );
