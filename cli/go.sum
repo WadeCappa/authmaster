@@ -1,5 +1,9 @@
 github.com/WadeCappa/authmaster v0.0.0 h1:uEzyuAozbJUA/IRXDmnmxR/iYw++3a4/KUrZp/2hSsE=
 github.com/WadeCappa/authmaster v0.0.0/go.mod h1:k/6kPrxm3l49iiBa20NxC4mvdgfBLVRK6lki8Nhz0yM=
+github.com/WadeCappa/authmaster v0.0.1 h1:3T3UjRZsLnYmctzNGIdiT6wRz+CI2aE8TeVumfXJR4I=
+github.com/WadeCappa/authmaster v0.0.1/go.mod h1:k/6kPrxm3l49iiBa20NxC4mvdgfBLVRK6lki8Nhz0yM=
+github.com/WadeCappa/real_time_chat/channel-manager v0.0.0-20250616174114-37f77fb6fd82 h1:xMuvXT43R5k1EPZStBSLYzvczkkI7jTVVr60r3qGRe4=
+github.com/WadeCappa/real_time_chat/channel-manager v0.0.0-20250616174114-37f77fb6fd82/go.mod h1:qTr0gupkui/NOju/ql6UUjXDyAomT/Buxuk6PtvNCDs=
 golang.org/x/net v0.40.0 h1:79Xs7wF06Gbdcg4kdCCIQArK11Z1hr5POQ6+fIYHNuY=
 golang.org/x/net v0.40.0/go.mod h1:y0hY0exeL2Pku80/zKK7tpntoX23cqL3Oa6njdgRtds=
 golang.org/x/sys v0.33.0 h1:q3i8TbbEz+JRD9ywIRlyRAQbM0qF7hu24q3teo2hbuw=

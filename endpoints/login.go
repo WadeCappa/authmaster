@@ -67,15 +67,6 @@ func Login(ctx context.Context, in *authmaster.LoginRequest) (*authmaster.LoginR
 		return nil, PERMISSION_DENIED
 	}
 
-	previousToken, err := checkForPreviousToken(*userData.userId)
-	if err != nil {
-		return nil, INTERNAL_ERROR
-	}
-
-	if previousToken != nil {
-		return &authmaster.LoginResponse{Token: *previousToken}, nil
-	}
-
 	token, err := makeToken(authTokenLength)
 	if err != nil {
 		return nil, INTERNAL_ERROR
@@ -85,7 +76,10 @@ func Login(ctx context.Context, in *authmaster.LoginRequest) (*authmaster.LoginR
 
 	newTokenResult, err := store.Call(func(conn *pgx.Conn) makeNewTokenResult {
 		var newToken string
-		err := conn.QueryRow(context.Background(), "insert into tokens (user_id, token, expire_time) values ($1, $2, $3) returning token", userData.userId, token, expireTime).Scan(&newToken)
+		err := conn.QueryRow(
+			context.Background(),
+			"insert into tokens (user_id, token, expire_time) values ($1, $2, $3) returning token",
+			userData.userId, token, expireTime).Scan(&newToken)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to store new token %s\n", err)
 			return makeNewTokenResult{err: err, newToken: nil}
@@ -123,8 +117,15 @@ func makeToken(n int) (*string, error) {
 func checkForPreviousToken(userId int64) (*string, error) {
 	result, err := store.Call(func(conn *pgx.Conn) getPreviousTokenResult {
 		var token string
-		err := conn.QueryRow(context.Background(), "select token from tokens where user_id=$1", userId).Scan(&token)
+		var expireTime time.Time
+		err := conn.QueryRow(
+			context.Background(),
+			"select token, expire_time from tokens where user_id=$1",
+			userId).Scan(&token, &expireTime)
 		if err != nil {
+			return getPreviousTokenResult{err: err, previousToken: nil}
+		}
+		if expireTime.Before(time.Now()) {
 			return getPreviousTokenResult{err: err, previousToken: nil}
 		}
 		return getPreviousTokenResult{previousToken: &token, err: nil}

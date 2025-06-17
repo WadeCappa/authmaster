@@ -17,7 +17,7 @@ create table tokens (
 
     foreign key (user_id) references users(user_id),
     unique(token),
-    primary key (user_id)
+    primary key (user_id, token)
 );
 
 create index token_lookup on tokens (token);
