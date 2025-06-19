@@ -1,0 +1,4 @@
+
+auth.cantseewater.online {
+	reverse_proxy authmaster:50051
+}
