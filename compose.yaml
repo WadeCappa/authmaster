@@ -28,7 +28,6 @@ services:
     build:
       context: .
       dockerfile: authmaster-dockerfile
-    hostname: authmaster
     depends_on:
       - postgres
     deploy:
