@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"fmt"
 	"log"
@@ -9,7 +10,7 @@ import (
 	"github.com/WadeCappa/authman/cli/requests"
 	"golang.org/x/term"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 )
 
 const (
@@ -33,7 +34,7 @@ var (
 	cmd  = flag.String("cmd", NO_COMMAND, "choose one of the following; create-account, login, test")
 )
 
-type credentials struct {
+type userCreds struct {
 	username string
 	password string
 }
@@ -46,7 +47,8 @@ func main() {
 		log.Fatalf("Invalid command %s", *cmd)
 	}
 
-	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	creds := credentials.NewTLS(&tls.Config{})
+	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -55,7 +57,7 @@ func main() {
 	command(conn)
 }
 
-func readUsernameAndPassword() (*credentials, error) {
+func readUsernameAndPassword() (*userCreds, error) {
 	var username string
 	fmt.Print("Enter username: ")
 	fmt.Scanln(&username)
@@ -66,7 +68,7 @@ func readUsernameAndPassword() (*credentials, error) {
 		return nil, err
 	}
 
-	return &credentials{username: username, password: string(password)}, nil
+	return &userCreds{username: username, password: string(password)}, nil
 }
 
 func login(conn *grpc.ClientConn) {

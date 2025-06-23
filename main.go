@@ -13,7 +13,7 @@ import (
 
 const (
 	AUTH_PREFIX                  = "Authorization"
-	TESTING_DEFAULT_POSTGRES_URL = "postgres://postgres:pass@postgres:5432/authmaster_prod_db"
+	TESTING_DEFAULT_POSTGRES_URL = "postgres://postgres:pass@postgres:5432/authmaster_db"
 )
 
 var (
