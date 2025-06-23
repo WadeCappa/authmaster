@@ -1,9 +1,10 @@
 
-auth.cantseewater.online {
+localhost:40040 {
     reverse_proxy {
 	to authmaster:50051 
         transport http {
             versions h2c  
         }
     }
+    tls internal
 }
