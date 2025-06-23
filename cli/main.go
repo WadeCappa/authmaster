@@ -47,9 +47,7 @@ func main() {
 		log.Fatalf("Invalid command %s", *cmd)
 	}
 
-	creds := credentials.NewTLS(&tls.Config{
-		InsecureSkipVerify: true, // we do this because we self-sign internally. There's probably a better method for checking security
-	})
+	creds := credentials.NewTLS(&tls.Config{})
 	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
