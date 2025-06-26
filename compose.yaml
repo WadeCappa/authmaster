@@ -1,37 +1,7 @@
 services:
-  caddy:
-    image: caddy:latest
-    ports:
-      - "40040:40040"
-    volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-  postgres:
-    build:
-      context: .
-      dockerfile: postgres-dockerfile
-    hostname: postgres 
-    user: postgres
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
-    environment:
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_USER=postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data 
   authmaster:
     build:
       context: .
       dockerfile: authmaster-dockerfile
     depends_on:
       - postgres
-    deploy:
-      replicas: 2
-volumes:
-  caddy_data:
-  caddy_config:
-  postgres_data:

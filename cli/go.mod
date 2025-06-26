@@ -5,7 +5,6 @@ go 1.23.9
 require golang.org/x/term v0.32.0
 
 require (
-	github.com/WadeCappa/real_time_chat/channel-manager v0.0.0-20250616174114-37f77fb6fd82 // indirect
 	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a // indirect

@@ -1,13 +1,20 @@
-FROM golang:1.23
+# Build stage
+FROM golang:1.23 AS build
 
 WORKDIR /app
 
 COPY go.mod go.sum ./
+
 RUN go mod download
-COPY . ./
 
-COPY *.go ./
+COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /server
+RUN go build -ldflags="-linkmode external -extldflags -static" -tags netgo -o /app/server
+
+# Deploy stage
+FROM scratch 
+
+COPY --from=build /app/server server
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 CMD ["/server"]
