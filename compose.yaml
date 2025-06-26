@@ -5,3 +5,23 @@ services:
       dockerfile: authmaster-dockerfile
     depends_on:
       - postgres
+    ports:
+      - "50051:50051"
+  postgres:
+    build:
+      context: .
+      dockerfile: postgres-dockerfile
+    hostname: postgres
+    user: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
