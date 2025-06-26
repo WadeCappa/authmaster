@@ -9,12 +9,12 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -ldflags="-linkmode external -extldflags -static" -tags netgo -o /app/server
+RUN go build -ldflags="-linkmode external -extldflags -static" -tags netgo -o /app/build
 
 # Deploy stage
 FROM scratch 
 
-COPY --from=build /app/server server
+COPY --from=build /app/build build
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-CMD ["/server"]
+CMD ["/build"]

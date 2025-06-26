@@ -4,7 +4,6 @@ postgres-dockerfile
 Caddyfile
 LICENSE
 README.md
-seed.sql
 tests/
 frontend/
 cli/
