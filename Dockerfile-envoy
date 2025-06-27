@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN apk add --no-cache protoc
 
-COPY authmaster/authmaster.proto .
+COPY ./authmaster/authmaster.proto .
 
 RUN  protoc --include_imports --include_source_info --descriptor_set_out=authmaster.pb authmaster.proto
 

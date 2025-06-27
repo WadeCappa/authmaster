@@ -10,7 +10,7 @@ services:
       context: frontend
       dockerfile: Dockerfile
     ports:
-      - "8520:3000"
+      - "8520:8081"
   postgres:
     build:
       context: .

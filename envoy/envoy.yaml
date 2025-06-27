@@ -14,6 +14,24 @@ static_resources:
                 "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                 codec_type: auto
                 stat_prefix: ingress_http
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: local_service
+                      domains: ["*"]
+                      cors:
+                        allow_origin_string_match:
+                          - prefix: "*"
+                        allow_methods: GET, PUT, DELETE, POST, OPTIONS
+                        allow_headers: authorization,keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout
+                        max_age: "1728000"
+                        expose_headers: custom-header-1,grpc-status,grpc-message
+                      routes:
+                        - match: { prefix: "/authmaster" }
+                          route:
+                            cluster: authmaster_service
+                            max_stream_duration:
+                              grpc_timeout_header_max: 0s
                 http_filters:
                   - name: envoy.filters.http.grpc_web
                     typed_config:
@@ -24,24 +42,6 @@ static_resources:
                   - name: envoy.filters.http.router
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
-                route_config:
-                  name: local_route
-                  virtual_hosts:
-                    - name: local_service
-                      domains: ["*"]
-                      cors:
-                        allow_origin_string_match:
-                          - prefix: "*"
-                        allow_methods: GET, PUT, DELETE, POST, OPTIONS
-                        allow_headers: authorization,keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,application/grpc-web+proto
-                        max_age: "1728000"
-                        expose_headers: custom-header-1,grpc-status,grpc-message
-                      routes:
-                        - match: { prefix: "/authmaster" }
-                          route:
-                            cluster: authmaster_service
-                            max_stream_duration:
-                              grpc_timeout_header_max: 0s
   clusters:
     - name: authmaster_service
       connect_timeout: 0.25s
