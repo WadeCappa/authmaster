@@ -5,8 +5,12 @@ services:
       dockerfile: authmaster-dockerfile
     depends_on:
       - postgres
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
     ports:
-      - "50051:50051"
+      - "8520:3000"
   postgres:
     build:
       context: .
@@ -23,5 +27,15 @@ services:
       - POSTGRES_USER=postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  envoy_service:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy
+    ports:
+      - "8530:8000"
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
 volumes:
   postgres_data:
