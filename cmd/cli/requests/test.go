@@ -1,0 +1,24 @@
+package requests
+
+import (
+	"context"
+
+	"github.com/WadeCappa/authmaster/pkg/go/authmaster/v1"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
+)
+
+func Test(conn *grpc.ClientConn, token string) (*int64, error) {
+
+	newMetadata := metadata.Pairs("Authorization", token)
+	newContext := metadata.NewOutgoingContext(context.Background(), newMetadata)
+
+	c := authmaster.NewAuthmasterClient(conn)
+	response, err := c.TestAuth(newContext, &authmaster.TestAuthRequest{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &response.UserId, nil
+}
