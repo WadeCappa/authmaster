@@ -4,7 +4,7 @@ import './App.css';
 import { AuthmasterClient } from "./proto/AuthmasterServiceClientPb"; 
 import { LoginRequest, LoginResponse } from "./proto/authmaster_pb";
 
-const ENVOY_URL = process.env.REACT_APP_ENVOY_URL ?? "http://localhost:8530"
+const ENVOY_URL = process.env.REACT_APP_ENVOY_URL ?? "https://localhost:8530"
 
 const login = async (username: string, password: string): Promise<string> => {
   const client = new AuthmasterClient(ENVOY_URL);
