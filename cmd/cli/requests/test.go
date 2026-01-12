@@ -9,7 +9,6 @@ import (
 )
 
 func Test(conn *grpc.ClientConn, token string) (*int64, error) {
-
 	newMetadata := metadata.Pairs("Authorization", token)
 	newContext := metadata.NewOutgoingContext(context.Background(), newMetadata)
 
